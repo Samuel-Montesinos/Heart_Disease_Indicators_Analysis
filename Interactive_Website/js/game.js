@@ -17,6 +17,27 @@ let questions = [
         choice2: '4'
         choice3: '22'
         answer: 2,
+    },
+    {
+        question: 'What is 2+2?',
+        choice1: '2'
+        choice2: '4'
+        choice3: '22'
+        answer: 2,
+    },
+    {
+        question: 'What is 2+2?',
+        choice1: '2'
+        choice2: '4'
+        choice3: '22'
+        answer: 2,
+    },
+    {
+        question: 'What is 2+2?',
+        choice1: '2'
+        choice2: '4'
+        choice3: '22'
+        answer: 2,
     }
 ]
 
@@ -75,3 +96,10 @@ choices.forEach(choice => {
         }1000)
     })
 })
+
+incrementScore = num => {
+    score +=num
+    scoreText.innerText = score
+}
+
+startGame()
