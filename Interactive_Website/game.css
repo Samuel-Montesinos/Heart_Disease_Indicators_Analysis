@@ -29,6 +29,14 @@ body {
     width: 100%;
 }
 
+.correct {
+    background: #7a942e;
+}
+
+.incorrect {
+    background: #7a942e;
+}
+
 #hud {
     display: flex;
     justify-content: space-between;

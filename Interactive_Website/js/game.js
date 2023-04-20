@@ -1,5 +1,5 @@
 const question = document.querySelector('#question');
-const choices = Array.from(document.querySelector('.choice-text'));
+const choices = Array.from(document.querySelectorAll('.choice-text'));
 const progressText = document.querySelector('#progressText');
 const scoreText = document.querySelector('#score');
 const progressBarFull = document.querySelector('#progressBarFull');
@@ -12,31 +12,31 @@ let availableQuestions = []
 
 let questions = [
     {
-        question: 'What is 2+2?',
-        choice1: '2'
-        choice2: '4'
-        choice3: '22'
+        question: "What is 2+2?",
+        choice1: "2",
+        choice2: "4",
+        choice3: "22",
         answer: 2,
     },
     {
         question: 'What is 2+2?',
-        choice1: '2'
-        choice2: '4'
-        choice3: '22'
+        choice1: '2',
+        choice2: '4',
+        choice3: '22',
         answer: 2,
     },
     {
         question: 'What is 2+2?',
-        choice1: '2'
-        choice2: '4'
-        choice3: '22'
+        choice1: '2',
+        choice2: '4',
+        choice3: '22',
         answer: 2,
     },
     {
         question: 'What is 2+2?',
-        choice1: '2'
-        choice2: '4'
-        choice3: '22'
+        choice1: '2',
+        choice2: '4',
+        choice3: '22',
         answer: 2,
     }
 ]
@@ -84,6 +84,8 @@ choices.forEach(choice => {
         const selectedChoice = e.target
         const selectedAnswer = selectedChoice.dataset['number']
 
+        let classToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect'
+
         if(classToApply === 'correct') {
             incrementScore(SCORE_POINTS)
         }
@@ -93,7 +95,7 @@ choices.forEach(choice => {
         setTimeout(() => {
             selectedChoice.parentElement.classList.remove(classToApply)
             getNewQuestion()
-        }1000)
+        }, 1000)
     })
 })
 
