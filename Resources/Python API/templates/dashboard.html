@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Dashboard</title>
+    <!-- Include Plotly.js library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>My Dashboard</h1>
+      <div id="plot"></div>
+      <div id="yheartbmi"></div>
+      <div id="nheartbmi"></div>
+      <div id="yheartsmok"></div>
+      <div id="nheartsmok"></div>
+      <div id="yheartalch"></div>
+      <div id="nheartalch"></div>
+      <div id="yheartstrk"></div>
+      <div id="nheartstrk"></div>
+      <div id="yheartphyshealth"></div>
+      <div id="nheartphyshealth"></div>
+      <div id="yheartmenthealth"></div>
+      <div id="nheartmenthealth"></div>
+      <div id="yheartdiff"></div>
+      <div id="nheartdiff"></div>
+      <div id="yheartsex"></div>
+      <div id="nheartsex"></div>
+      <div id="yheartage"></div>
+      <div id="nheartage"></div>
+      <div id="yheartrace"></div>
+      <div id="nheartrace"></div>
+      <div id="yheartdiab"></div>
+      <div id="nheartdiab"></div>
+      <div id="yheartphysex"></div>
+      <div id="nheartphysex"></div>
+      <div id="yhearthealth"></div>
+      <div id="nhearthealth"></div>
+      <div id="yheartsleep"></div>
+      <div id="nheartsleep"></div>
+      <div id="yheartasth"></div>
+      <div id="nheartasth"></div>
+      <div id="yheartkid"></div>
+      <div id="nheartkid"></div>
+      <div id="yheartski"></div>
+      <div id="nheartski"></div>
+    </div>
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include JavaScript code to retrieve data and create chart -->
+    <script>
+      $(function() {
+        $.ajax({
+          url: 'http://localhost:5000/data',
+          crossDomain: true,
+          xhrFields: {
+            withCredentials: true
+          },
+          success: function(data) {
+            console.log('Data retrieved from Flask API:', data);
+            //Heart Disease Chart
+            var heartDisease = data.map(row => row[1]); // Extract heartdisease column
+            var counts = {};
+            heartDisease.forEach(function(x) { counts[x] = (counts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace1 = {
+              x: ['No', 'Yes'],
+              y: [counts[0], counts[1]],
+              type: 'bar'
+            };
+
+            //BMI charts
+            var bmis = data.map(row => row[2]); // Extract BMI column for yes
+            var heartDiseaseBmis = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseBmis.push(bmis[i]);
+              }
+            }
+            var bmicounts = {};
+            heartDiseaseBmis.forEach(function(x) { bmicounts[x] = (bmicounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace2 = {
+              x: Object.keys(bmicounts),
+              y: Object.values(bmicounts),
+              type: 'bar'
+            };
+            
+            var bmis = data.map(row => row[2]); // Extract BMI column for no
+            var heartDiseaseBmis = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseBmis.push(bmis[i]);
+              }
+            }
+            var bmicounts = {};
+            heartDiseaseBmis.forEach(function(x) { bmicounts[x] = (bmicounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace3 = {
+              x: Object.keys(bmicounts),
+              y: Object.values(bmicounts),
+              type: 'bar'
+            };
+
+            //Smoker Charts
+            var smok = data.map(row => row[3]); // Extract smoker column
+            var heartDiseaseSmok = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseSmok.push(smok[i]);
+              }
+            }
+            var smokcounts = {};
+            heartDiseaseSmok.forEach(function(x) { smokcounts[x] = (smokcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace4 = {
+              x: ['No', 'Yes'],
+              y: [smokcounts[0], smokcounts[1]],
+              type: 'bar'
+            };
+
+            var smok = data.map(row => row[3]); // Extract smoker column
+            var heartDiseaseSmok = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseSmok.push(smok[i]);
+              }
+            }
+            var smokcounts = {};
+            heartDiseaseSmok.forEach(function(x) { smokcounts[x] = (smokcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace5 = {
+              x: ['No', 'Yes'],
+              y: [smokcounts[0], smokcounts[1]],
+              type: 'bar'
+            };
+
+            //Alcohol Charts
+            var alch = data.map(row => row[4]); // Extract Alcohol column
+            var heartDiseaseAlch = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseAlch.push(alch[i]);
+              }
+            }
+            var alchcounts = {};
+            heartDiseaseAlch.forEach(function(x) { alchcounts[x] = (alchcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace6 = {
+              x: ['No', 'Yes'],
+              y: [alchcounts[0], alchcounts[1]],
+              type: 'bar'
+            };
+
+            var alch = data.map(row => row[4]); // Extract Alcohol column
+            var heartDiseaseAlch = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseAlch.push(alch[i]);
+              }
+            }
+            var alchcounts = {};
+            heartDiseaseAlch.forEach(function(x) { alchcounts[x] = (alchcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace7 = {
+              x: ['No', 'Yes'],
+              y: [alchcounts[0], alchcounts[1]],
+              type: 'bar'
+            };
+
+            //Stroke Charts
+            var strk = data.map(row => row[5]); // Extract Alcohol column
+            var heartDiseaseStrk = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseStrk.push(strk[i]);
+              }
+            }
+            var strkcounts = {};
+            heartDiseaseStrk.forEach(function(x) { strkcounts[x] = (strkcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace8 = {
+              x: ['No', 'Yes'],
+              y: [strkcounts[0], strkcounts[1]],
+              type: 'bar'
+            };
+
+            var strk = data.map(row => row[5]); // Extract Alcohol column
+            var heartDiseaseStrk = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseStrk.push(strk[i]);
+              }
+            }
+            var strkcounts = {};
+            heartDiseaseStrk.forEach(function(x) { strkcounts[x] = (strkcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace9 = {
+              x: ['No', 'Yes'],
+              y: [strkcounts[0], strkcounts[1]],
+              type: 'bar'
+            };         
+            
+            //Phys Health
+            var physhealth = data.map(row => row[6]); // Extract BMI column for yes
+            var heartDiseasePhyshealth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseasePhyshealth.push(physhealth[i]);
+              }
+            }
+            var physhealthcounts = {};
+            heartDiseasePhyshealth.forEach(function(x) { physhealthcounts[x] = (physhealthcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace10 = {
+              x: Object.keys(physhealthcounts),
+              y: Object.values(physhealthcounts),
+              type: 'bar'
+            };
+            
+            var physhealth = data.map(row => row[6]); // Extract BMI column for yes
+            var heartDiseasePhyshealth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseasePhyshealth.push(physhealth[i]);
+              }
+            }
+            var physhealthcounts = {};
+            heartDiseasePhyshealth.forEach(function(x) { physhealthcounts[x] = (physhealthcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace11 = {
+              x: Object.keys(physhealthcounts),
+              y: Object.values(physhealthcounts),
+              type: 'bar'
+            };
+
+            //Ment Health
+            var menthealth = data.map(row => row[7]); // Extract BMI column for yes
+            var heartDiseaseMenthealth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseMenthealth.push(menthealth[i]);
+              }
+            }
+            var menthealthcounts = {};
+            heartDiseaseMenthealth.forEach(function(x) { menthealthcounts[x] = (menthealthcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace12 = {
+              x: Object.keys(menthealthcounts),
+              y: Object.values(menthealthcounts),
+              type: 'bar'
+            };
+            
+            var menthealth = data.map(row => row[7]); // Extract BMI column for yes
+            var heartDiseaseMenthealth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseMenthealth.push(menthealth[i]);
+              }
+            }
+            var menthealthcounts = {};
+            heartDiseaseMenthealth.forEach(function(x) { menthealthcounts[x] = (menthealthcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace13 = {
+              x: Object.keys(menthealthcounts),
+              y: Object.values(menthealthcounts),
+              type: 'bar'
+            };
+
+            //Difficulty Walking
+            var diff = data.map(row => row[8]); // Extract Alcohol column
+            var heartDiseaseDiff = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseDiff.push(diff[i]);
+              }
+            }
+            var diffcounts = {};
+            heartDiseaseDiff.forEach(function(x) { diffcounts[x] = (diffcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace14 = {
+              x: ['No', 'Yes'],
+              y: [diffcounts[0], diffcounts[1]],
+              type: 'bar'
+            };
+
+            var diff = data.map(row => row[8]); // Extract Alcohol column
+            var heartDiseaseDiff = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseDiff.push(diff[i]);
+              }
+            }
+            var diffcounts = {};
+            heartDiseaseDiff.forEach(function(x) { diffcounts[x] = (diffcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace15 = {
+              x: ['No', 'Yes'],
+              y: [diffcounts[0], diffcounts[1]],
+              type: 'bar'
+            };  
+            
+            //Heart Disease based on Sex
+            var sex = data.map(row => row[9]); // Extract Sex column
+            var heartDiseaseSex = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseSex.push(sex[i]);
+              }
+            }
+            var sexcounts = {};
+            heartDiseaseSex.forEach(function(x) { sexcounts[x] = (sexcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace16 = {
+              x: ['Male', 'Female'],
+              y: [sexcounts[0], sexcounts[1]],
+              type: 'bar'
+            };
+
+            var sex = data.map(row => row[9]); // Extract Sex column
+            var heartDiseaseSex = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseSex.push(sex[i]);
+              }
+            }
+            var sexcounts = {};
+            heartDiseaseSex.forEach(function(x) { sexcounts[x] = (sexcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace17 = {
+              x: ['Male', 'Female'],
+              y: [sexcounts[0], sexcounts[1]],
+              type: 'bar'
+            };
+
+            //Heart Disease based on Age
+            var age = data.map(row => row[10]); // Extract BMI column for yes
+            var heartDiseaseAge = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseAge.push(age[i]);
+              }
+            }
+            var agecounts = {};
+            heartDiseaseAge.forEach(function(x) { agecounts[x] = (agecounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace18 = {
+              x: ['18-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80 or older'],
+              y: Object.values(agecounts),
+              type: 'bar'
+            };
+
+            var age = data.map(row => row[10]); // Extract BMI column for yes
+            var heartDiseaseAge = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseAge.push(age[i]);
+              }
+            }
+            var agecounts = {};
+            heartDiseaseAge.forEach(function(x) { agecounts[x] = (agecounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace19 = {
+              x: ['18-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80 or older'],
+              y: Object.values(agecounts),
+              type: 'bar'
+            };
+
+            //Heart Disease based on Race
+            var race = data.map(row => row[11]); // Extract BMI column for yes
+            var heartDiseaseRace = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseRace.push(race[i]);
+              }
+            }
+            var racecounts = {};
+            heartDiseaseRace.forEach(function(x) { racecounts[x] = (racecounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace20 = {
+              x: ['American Indian/Alaskan Native', 'Asian', 'Black', 'Hispanic', 'White', 'Other'],
+              y: Object.values(racecounts),
+              type: 'bar'
+            };
+
+            var race = data.map(row => row[11]); // Extract BMI column for yes
+            var heartDiseaseRace = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseRace.push(race[i]);
+              }
+            }
+            var racecounts = {};
+            heartDiseaseRace.forEach(function(x) { racecounts[x] = (racecounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace21 = {
+              x: ['American Indian/Alaskan Native', 'Asian', 'Black', 'Hispanic', 'White', 'Other'],
+              y: Object.values(racecounts),
+              type: 'bar'
+            };
+
+            //Heart Disease based on Diabetes
+            var diab = data.map(row => row[12]); // Extract BMI column for yes
+            var heartDiseaseDiab = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseDiab.push(diab[i]);
+              }
+            }
+            var diabcounts = {};
+            heartDiseaseDiab.forEach(function(x) { diabcounts[x] = (diabcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace22 = {
+              x: ['No', 'No, Borderline Diabetic', 'Yes', 'Yes, during pregnancy'],
+              y: Object.values(diabcounts),
+              type: 'bar'
+            };
+
+            var diab = data.map(row => row[12]); // Extract BMI column for yes
+            var heartDiseaseDiab = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseDiab.push(diab[i]);
+              }
+            }
+            var diabcounts = {};
+            heartDiseaseDiab.forEach(function(x) { diabcounts[x] = (diabcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace23 = {
+              x: ['No', 'No, Borderline Diabetic', 'Yes', 'Yes, during pregnancy'],
+              y: Object.values(diabcounts),
+              type: 'bar'
+            };
+
+            //Physical Exercise
+            var physex = data.map(row => row[13]); // Extract Alcohol column
+            var heartDiseasePhysex = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseasePhysex.push(physex[i]);
+              }
+            }
+            var physexcounts = {};
+            heartDiseasePhysex.forEach(function(x) { physexcounts[x] = (physexcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace24 = {
+              x: ['No', 'Yes'],
+              y: [physexcounts[0], physexcounts[1]],
+              type: 'bar'
+            };
+
+            var physex = data.map(row => row[13]); // Extract Alcohol column
+            var heartDiseasePhysex = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseasePhysex.push(physex[i]);
+              }
+            }
+            var physexcounts = {};
+            heartDiseasePhysex.forEach(function(x) { physexcounts[x] = (physexcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace25 = {
+              x: ['No', 'Yes'],
+              y: [physexcounts[0], physexcounts[1]],
+              type: 'bar'
+            };
+
+            //Heart Disease based on opinion of Health
+            var genhealth = data.map(row => row[14]); // Extract BMI column for yes
+            var heartDiseaseGenhealth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseGenhealth.push(genhealth[i]);
+              }
+            }
+            var genhealthcounts = {};
+            heartDiseaseGenhealth.forEach(function(x) { genhealthcounts[x] = (genhealthcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace26 = {
+              x: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+              y: Object.values(genhealthcounts),
+              type: 'bar'
+            };
+
+            var genhealth = data.map(row => row[14]); // Extract BMI column for yes
+            var heartDiseaseGenhealth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseGenhealth.push(genhealth[i]);
+              }
+            }
+            var genhealthcounts = {};
+            heartDiseaseGenhealth.forEach(function(x) { genhealthcounts[x] = (genhealthcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace27 = {
+              x: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+              y: Object.values(genhealthcounts),
+              type: 'bar'
+            };
+
+            //Sleep Time
+            var sleep = data.map(row => row[15]); // Extract BMI column for yes
+            var heartDiseaseSleep = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseSleep.push(sleep[i]);
+              }
+            }
+            var sleepcounts = {};
+            heartDiseaseSleep.forEach(function(x) { sleepcounts[x] = (sleepcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace28 = {
+              x: Object.keys(sleepcounts),
+              y: Object.values(sleepcounts),
+              type: 'bar'
+            };
+            
+            var sleep = data.map(row => row[15]); // Extract BMI column for yes
+            var heartDiseaseSleep = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseSleep.push(sleep[i]);
+              }
+            }
+            var sleepcounts = {};
+            heartDiseaseSleep.forEach(function(x) { sleepcounts[x] = (sleepcounts[x] || 0) + 1; }); // Count frequency of BMIs
+            var trace29 = {
+              x: Object.keys(sleepcounts),
+              y: Object.values(sleepcounts),
+              type: 'bar'
+            };
+
+            //Asthma
+            var asth = data.map(row => row[16]); // Extract Alcohol column
+            var heartDiseaseAsth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseAsth.push(asth[i]);
+              }
+            }
+            var asthcounts = {};
+            heartDiseaseAsth.forEach(function(x) { asthcounts[x] = (asthcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace30 = {
+              x: ['No', 'Yes'],
+              y: [asthcounts[0], asthcounts[1]],
+              type: 'bar'
+            };
+
+            var asth = data.map(row => row[16]); // Extract Alcohol column
+            var heartDiseaseAsth = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseAsth.push(asth[i]);
+              }
+            }
+            var asthcounts = {};
+            heartDiseaseAsth.forEach(function(x) { asthcounts[x] = (asthcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace31 = {
+              x: ['No', 'Yes'],
+              y: [asthcounts[0], asthcounts[1]],
+              type: 'bar'
+            };
+
+            //Kidney
+            var kid = data.map(row => row[17]); // Extract Alcohol column
+            var heartDiseaseKid = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseKid.push(kid[i]);
+              }
+            }
+            var kidcounts = {};
+            heartDiseaseKid.forEach(function(x) { kidcounts[x] = (kidcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace32 = {
+              x: ['No', 'Yes'],
+              y: [kidcounts[0], kidcounts[1]],
+              type: 'bar'
+            };
+
+            var kid = data.map(row => row[17]); // Extract Alcohol column
+            var heartDiseaseKid = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseKid.push(kid[i]);
+              }
+            }
+            var kidcounts = {};
+            heartDiseaseKid.forEach(function(x) { kidcounts[x] = (kidcounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace33 = {
+              x: ['No', 'Yes'],
+              y: [kidcounts[0], kidcounts[1]],
+              type: 'bar'
+            };
+
+            //Skin Cancer
+            var ski = data.map(row => row[18]); // Extract Alcohol column
+            var heartDiseaseSki = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 1) {
+                heartDiseaseSki.push(ski[i]);
+              }
+            }
+            var skicounts = {};
+            heartDiseaseSki.forEach(function(x) { skicounts[x] = (skicounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace34 = {
+              x: ['No', 'Yes'],
+              y: [skicounts[0], skicounts[1]],
+              type: 'bar'
+            };
+
+            var ski = data.map(row => row[18]); // Extract Alcohol column
+            var heartDiseaseSki = [];
+            for (var i = 0; i < heartDisease.length; i++) {
+              if (heartDisease[i] == 0) {
+                heartDiseaseSki.push(ski[i]);
+              }
+            }
+            var skicounts = {};
+            heartDiseaseSki.forEach(function(x) { skicounts[x] = (skicounts[x] || 0) + 1; }); // Count frequency of 0s and 1s
+            var trace35 = {
+              x: ['No', 'Yes'],
+              y: [skicounts[0], skicounts[1]],
+              type: 'bar'
+            };
+            
+            //Layouts
+            var layout1 = {
+              title: 'Heart Disease Counts',
+              xaxis: {
+                title: 'Heart Disease',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout2 = {
+              title: 'BMI Counts for Individuals with Heart Disease',
+              xaxis: {
+                title: 'BMI',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout3 = {
+              title: 'BMI Counts for Individuals without Heart Disease',
+              xaxis: {
+                title: 'BMI',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout4 = {
+              title: 'Smoker Counts with Heart Disease',
+              xaxis: {
+                title: 'Smoked',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout5 = {
+              title: 'Smoker Counts without Heart Disease',
+              xaxis: {
+                title: 'Smoked',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout6 = {
+              title: 'Alcohol Drinker Counts with Heart Disease',
+              xaxis: {
+                title: 'Drinkers',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout7 = {
+              title: 'Alcohol Drinker Counts without Heart Disease',
+              xaxis: {
+                title: 'Drinkers',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout8 = {
+              title: 'Stroke Counts with Heart Disease',
+              xaxis: {
+                title: 'Stroke Victims',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout9 = {
+              title: 'Stroke Counts without Heart Disease',
+              xaxis: {
+                title: 'Stroke Victims',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout10 = {
+              title: 'Days Individuals with Heart Disease have thought about their Physical Health',
+              xaxis: {
+                title: 'Days',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout11 = {
+              title: 'Days Individuals without Heart Disease have thought about their Physical Health',
+              xaxis: {
+                title: 'Days',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout12 = {
+              title: 'Days Individuals with Heart Disease have thought about their Mental Health',
+              xaxis: {
+                title: 'Days',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout13 = {
+              title: 'Days Individuals without Heart Disease have thought about their Mental Health',
+              xaxis: {
+                title: 'Days',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout14 = {
+              title: 'Individuals that have Difficulty Walking with Heart Disease',
+              xaxis: {
+                title: 'Difficulty Walking',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout15 = {
+              title: 'Individuals that have Difficulty Walking without Heart Disease',
+              xaxis: {
+                title: 'Difficulty Walking',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout16 = {
+              title: 'Heart Disease based on Sex',
+              xaxis: {
+                title: 'Sex',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout17 = {
+              title: 'Lack of Heart Disease based on Sex',
+              xaxis: {
+                title: 'Sex',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout18 = {
+              title: 'Occurences of Heart Disease based on Age',
+              xaxis: {
+                title: 'Age Range',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout19 = {
+              title: 'Lack of Heart Disease based on Age',
+              xaxis: {
+                title: 'Age Range',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout20 = {
+              title: 'Occurences of Heart Disease based on Age',
+              xaxis: {
+                title: 'Race',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout21 = {
+              title: 'Lack of Heart Disease based on Race',
+              xaxis: {
+                title: 'Race',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout22 = {
+              title: 'Occurences of Heart Disease based on Diabetes',
+              xaxis: {
+                title: 'Diabetes',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout23 = {
+              title: 'Lack of Heart Disease based on Diabetes',
+              xaxis: {
+                title: 'Diabetes',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout24 = {
+              title: 'Physical Exercise outside of work with Heart Disease',
+              xaxis: {
+                title: 'Exercise done outside of work',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout25 = {
+              title: 'Physical Exercise outside of work without Heart Disease',
+              xaxis: {
+                title: 'Exercise done outside of work',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout26 = {
+              title: 'Heart Disease based on Personal Opinion of Health',
+              xaxis: {
+                title: 'Personal Opinion of Health',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout27 = {
+              title: 'Lack of Heart Disease based on Personal Opinion of Health',
+              xaxis: {
+                title: 'Personal Opinion of Health',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout28 = {
+              title: 'Heart Disease based on Hours of Sleep',
+              xaxis: {
+                title: 'Hours of Sleep',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout29 = {
+              title: 'Lack of Heart Disease based on Hours of Sleep',
+              xaxis: {
+                title: 'Hours of Sleep',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout30 = {
+              title: 'Heart Disease based on Asthma',
+              xaxis: {
+                title: 'Past or Present Asthma',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout31 = {
+              title: 'Lack of Heart Disease based on Asthma',
+              xaxis: {
+                title: 'Past or Present Asthma',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout32 = {
+              title: 'Heart Disease based on previous/present Kidney Disease',
+              xaxis: {
+                title: 'Past or Present Kidney Disease',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout33 = {
+              title: 'Lack of Heart Disease based on previous/present Kidney Disease',
+              xaxis: {
+                title: 'Past or Present Kidney Disease',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout34 = {
+              title: 'Heart Disease based on previous/present Skin Cancer',
+              xaxis: {
+                title: 'Past or Present Skin Cancer',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+            var layout35 = {
+              title: 'Lack of Heart Disease based on previous/present Skin Cancer',
+              xaxis: {
+                title: 'Past or Present Skin Cancer',
+              },
+              yaxis: {
+                title: 'Count',
+              }
+            };
+
+            //Plots
+            Plotly.newPlot('plot', [trace1], layout1);
+            Plotly.newPlot('yheartbmi', [trace2], layout2);
+            Plotly.newPlot('nheartbmi', [trace3], layout3);
+            Plotly.newPlot('yheartsmok', [trace4], layout4);
+            Plotly.newPlot('nheartsmok', [trace5], layout5);
+            Plotly.newPlot('yheartalch', [trace6], layout6);
+            Plotly.newPlot('nheartalch', [trace7], layout7);
+            Plotly.newPlot('yheartstrk', [trace8], layout8);
+            Plotly.newPlot('nheartstrk', [trace9], layout9);
+            Plotly.newPlot('yheartphyshealth', [trace10], layout10);
+            Plotly.newPlot('nheartphyshealth', [trace11], layout11);
+            Plotly.newPlot('yheartmenthealth', [trace12], layout12);
+            Plotly.newPlot('nheartmenthealth', [trace13], layout13);
+            Plotly.newPlot('yheartdiff', [trace14], layout14);
+            Plotly.newPlot('nheartdiff', [trace15], layout15);
+            Plotly.newPlot('yheartsex', [trace16], layout16);
+            Plotly.newPlot('nheartsex', [trace17], layout17);
+            Plotly.newPlot('yheartage', [trace18], layout18);
+            Plotly.newPlot('nheartage', [trace19], layout19);
+            Plotly.newPlot('yheartrace', [trace20], layout20);
+            Plotly.newPlot('nheartrace', [trace21], layout21);
+            Plotly.newPlot('yheartdiab', [trace22], layout22);
+            Plotly.newPlot('nheartdiab', [trace23], layout23);
+            Plotly.newPlot('yheartphysex', [trace24], layout24);
+            Plotly.newPlot('nheartphysex', [trace25], layout25);
+            Plotly.newPlot('yhearthealth', [trace26], layout26);
+            Plotly.newPlot('nhearthealth', [trace27], layout27);
+            Plotly.newPlot('yheartsleep', [trace28], layout28);
+            Plotly.newPlot('nheartsleep', [trace29], layout29);
+            Plotly.newPlot('yheartasth', [trace30], layout30);
+            Plotly.newPlot('nheartasth', [trace31], layout31);
+            Plotly.newPlot('yheartkid', [trace32], layout32);
+            Plotly.newPlot('nheartkid', [trace33], layout33);
+            Plotly.newPlot('yheartski', [trace34], layout34);
+            Plotly.newPlot('nheartski', [trace35], layout35);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
